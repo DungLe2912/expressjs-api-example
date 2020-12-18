@@ -1,12 +1,29 @@
 const httpStatus = require('http-status');
 const APIError = require('../utils/APIError');
+const Pagination = require('../utils/pagination');
 const Post = require('../models/post.model');
 const { postSerializer, postCollectionSerializer } = require('../serializers/post.serializer');
 
 exports.listPost = async (req, res, next) => {
   try {
-    const posts = await Post.find();
-    res.json(postCollectionSerializer(posts));
+    const { error, limit, page } = Pagination.isValid(
+      req.query.limit,
+      req.query.page,
+    );
+    if (error) {
+      const detail = error.details[0];
+      throw new APIError({
+        errors: error,
+        status: httpStatus.BAD_REQUEST,
+        message: detail.message,
+      });
+    }
+    const totalPosts = await Post.countDocuments();
+    const posts = await Post.find().skip((page - 1) * limit).limit(limit);
+    res.json({
+      posts: postCollectionSerializer(posts),
+      totalPages: Math.ceil(totalPosts / limit),
+    });
   } catch (error) {
     next(error);
   }
@@ -17,7 +34,9 @@ exports.createPost = async (req, res, next) => {
     const post = new Post(req.body);
     const savedPost = await post.save();
 
-    res.json(postSerializer(savedPost));
+    res.json({
+      post: postSerializer(savedPost),
+    });
   } catch (error) {
     next(error);
   }
@@ -33,7 +52,35 @@ exports.showPost = async (req, res, next) => {
         message: 'Post not found',
       });
     }
-    res.json(postSerializer(post));
+    res.json({
+      post: postSerializer(post),
+    });
+  } catch (error) {
+    next(error);
+  }
+};
+
+exports.updatePost = async (req, res, next) => {
+  try {
+    const post = await Post.findOneAndUpdate({
+      _id: req.params.id,
+    }, req.body, { new: true });
+
+    res.json({
+      post: postSerializer(post),
+    });
+  } catch (error) {
+    next(error);
+  }
+};
+
+exports.deletePost = async (req, res, next) => {
+  try {
+    const post = await Post.findOneAndRemove({ _id: req.params.id });
+
+    res.json({
+      post: postSerializer(post),
+    });
   } catch (error) {
     next(error);
   }
