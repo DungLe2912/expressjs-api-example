@@ -6,18 +6,10 @@ const { postSerializer, postCollectionSerializer } = require('../serializers/pos
 
 exports.listPost = async (req, res, next) => {
   try {
-    const { error, limit, page } = Pagination.isValid(
+    const { limit, page } = Pagination.paginate(
       req.query.limit,
       req.query.page,
     );
-    if (error) {
-      const detail = error.details[0];
-      throw new APIError({
-        errors: error,
-        status: httpStatus.BAD_REQUEST,
-        message: detail.message,
-      });
-    }
     const totalPosts = await Post.countDocuments();
     const posts = await Post.find().skip((page - 1) * limit).limit(limit);
     res.json({
