@@ -7,28 +7,70 @@ const {
   getPostValidation,
   updatePostValidation,
 } = require('../../validations/post.validation');
+const { authenticate, authorize } = require('../../middlewares/auth');
+const { role: systemRole } = require('../../constants/role');
 
 const router = express.Router();
 
 // GET /api/posts
 router.route('/')
-  .get(getListPostValidation, postController.listPost);
+  .get(
+    getListPostValidation,
+    authenticate(),
+    authorize([
+      systemRole.admin,
+      systemRole.user,
+    ]),
+    postController.listPost,
+  );
 
 // POST /api/posts
 router.route('/')
-  .post(createPostValidation, postController.createPost);
+  .post(
+    createPostValidation,
+    authenticate(),
+    authorize([
+      systemRole.admin,
+      systemRole.user,
+    ]),
+    postController.createPost,
+  );
 
 // GET /api/posts/:id
 router.route('/:id')
-  .get(getPostValidation, postController.showPost);
+  .get(
+    getPostValidation,
+    authenticate(),
+    authorize([
+      systemRole.admin,
+      systemRole.user,
+    ]),
+    postController.showPost,
+  );
 
 // DELETE /api/posts/:id
 router.route('/:id')
-  .delete(deletePostValidation, postController.deletePost);
+  .delete(
+    deletePostValidation,
+    authenticate(),
+    authorize([
+      systemRole.admin,
+      systemRole.user,
+    ]),
+    postController.deletePost,
+  );
 
 // DELETE /api/posts/:id
 router.route('/:id')
-  .patch(updatePostValidation, createPostValidation,
-    postController.updatePost);
+  .patch(
+    updatePostValidation,
+    createPostValidation,
+    authenticate(),
+    authorize([
+      systemRole.admin,
+      systemRole.user,
+    ]),
+    postController.updatePost,
+  );
 
 module.exports = router;
