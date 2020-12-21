@@ -3,7 +3,7 @@ const httpStatus = require('http-status');
 const passport = require('passport');
 const User = require('../models/user.model');
 const { userSerializer } = require('../serializers/user.serializer');
-const { hashPassword } = require('../utils/helpers');
+const { hashPassword, formatDate } = require('../utils/helpers');
 const { createTokens } = require('../services/authServices');
 
 exports.signUp = async (req, res, next) => {
@@ -45,4 +45,20 @@ exports.signIn = async (req, res, next) => {
       }
     },
   )(req, res, next);
+};
+
+exports.getInfo = async (req, res, next) => {
+  const { id } = req.user;
+  try {
+    const account = await User.findById(id);
+    const userTemp = account.toJSON();
+    delete userTemp.password;
+    
+    return res.status(httpStatus.OK).json({
+      ...userTemp,
+      birthday: formatDate(userTemp.birthday)
+    });
+  } catch (e) {
+    return next(e);
+  }
 };
