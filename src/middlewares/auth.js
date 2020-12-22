@@ -23,9 +23,9 @@ function authenticate() {
         if (!user) {
           return next(
             new APIError({
-              errors: new Error('Token không hợp lệ.'),
+              errors: new Error('Invalid token.'),
               status: httpStatus.UNAUTHORIZED,
-              message: 'Token không hợp lệ.',
+              message: 'Invalid token.',
             }),
           );
         }
@@ -65,17 +65,17 @@ function authorize(roles = []) {
         && !authorizeRoles.includes(req.user.role)
     ) {
       throw new APIError({
-        errors: new Error('Bạn không có quyền truy cập.'),
+        errors: new Error('You do not have permission to login.'),
         status: httpStatus.FORBIDDEN,
-        message: 'Bạn không có quyền truy cập.',
+        message: 'You do not have permission to login.',
       });
     }
 
     if (!req.user) {
       throw new APIError({
-        errors: new Error('Người dùng không tồn tại.'),
+        errors: new Error('User is not exist.'),
         status: httpStatus.FORBIDDEN,
-        message: 'Người dùng không tồn tại.',
+        message: 'User is not exist.',
       });
     }
     next();
