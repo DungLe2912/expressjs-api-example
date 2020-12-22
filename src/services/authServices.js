@@ -9,9 +9,9 @@ async function createTokens(userId) {
     const user = await User.findById(userId);
     if (!user) {
       throw new APIError({
-        errors: new Error('Không tồn tại người dùng.'),
+        errors: new Error('User is not exist.'),
         status: httpStatus.NOT_FOUND,
-        message: 'Không tồn tại người dùng',
+        message: 'User is not exist.',
       });
     }
     const jsonUser = user.toJSON();
