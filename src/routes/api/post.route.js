@@ -1,4 +1,6 @@
 const express = require('express');
+const { validate } = require('express-validation');
+
 const postController = require('../../controllers/post.controller');
 const {
   createPostValidation,
@@ -15,7 +17,7 @@ const router = express.Router();
 // GET /api/posts
 router.route('/')
   .get(
-    getListPostValidation,
+    validate(getListPostValidation),
     authenticate(),
     authorize([
       systemRole.admin,
@@ -27,7 +29,7 @@ router.route('/')
 // POST /api/posts
 router.route('/')
   .post(
-    createPostValidation,
+    validate(createPostValidation),
     authenticate(),
     authorize([
       systemRole.admin,
@@ -39,7 +41,7 @@ router.route('/')
 // GET /api/posts/:id
 router.route('/:id')
   .get(
-    getPostValidation,
+    validate(getPostValidation),
     authenticate(),
     authorize([
       systemRole.admin,
@@ -51,7 +53,7 @@ router.route('/:id')
 // DELETE /api/posts/:id
 router.route('/:id')
   .delete(
-    deletePostValidation,
+    validate(deletePostValidation),
     authenticate(),
     authorize([
       systemRole.admin,
@@ -63,8 +65,8 @@ router.route('/:id')
 // DELETE /api/posts/:id
 router.route('/:id')
   .patch(
-    updatePostValidation,
-    createPostValidation,
+    validate(updatePostValidation),
+    validate(createPostValidation),
     authenticate(),
     authorize([
       systemRole.admin,

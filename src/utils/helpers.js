@@ -1,6 +1,6 @@
 const bcrypt = require('bcrypt');
 const lodash = require('lodash');
-const { SALT_ROUND } = require('../constants/variable');
+const { SALT_ROUND } = require('../constants/user.constants');
 
 async function comparePassword(password, encrypted) {
   const isSame = await bcrypt.compare(password, encrypted);

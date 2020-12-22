@@ -14,10 +14,10 @@ exports.signUp = async (req, res, next) => {
     data.password = hashed;
     delete data.confirmPassword;
     const user = new User(data);
-    const savedPost = await user.save();
+    const savedUser = await user.save();
 
     res.json({
-      post: userSerializer(savedPost),
+      post: userSerializer(savedUser),
     });
   } catch (error) {
     next(error);

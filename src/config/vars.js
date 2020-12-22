@@ -15,4 +15,6 @@ module.exports = {
     },
   },
   morganLogFormat: process.env.NODE_ENV === 'production' ? 'combined' : 'dev',
+  APP_SECRET: process.env.APP_SECRET,
+  TOKEN_LIVING_TIME: process.env.TOKEN_LIVING_TIME,
 };

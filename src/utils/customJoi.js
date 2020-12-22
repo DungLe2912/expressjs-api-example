@@ -6,13 +6,16 @@ const moment = require('moment');
 const { role } = require('../constants/role');
 
 const {
+  MIN_LEN_BODY,
+  MAX_LEN_BODY,
+} = require('../constants/post.constants');
+const {
   MIN_LEN_FULLNAME,
   MAX_LEN_FULLNAME,
   MIN_LEN_PW,
   MAX_LEN_PW,
-  MIN_LEN_BODY,
-  MAX_LEN_BODY,
-} = require('../constants/variable');
+} = require('../constants/user.constants');
+
 const {
   normalizeHumanName,
 } = require('./helpers');
@@ -37,17 +40,17 @@ const customJoi = Joi.extend(
     type: 'string',
     base: joi.string(),
     messages: {
-      'string.content.length': `Độ dài body trong khoảng từ ${MIN_LEN_BODY} đến ${MAX_LEN_BODY}.`,
-      'string.content.invalid': 'Body phải là mã HTML.',
-      'string.password.length': `Độ dài mật khẩu trong khoảng từ ${MIN_LEN_PW} đến ${MAX_LEN_PW}.`,
-      'string.password.invalid': 'Mật khẩu phải gồm chữ và số.',
+      'string.content.length': `Body length ranges from ${MIN_LEN_BODY} to ${MAX_LEN_BODY}.`,
+      'string.content.invalid': 'Body must be HTML code.',
+      'string.password.length': `Password length ranges from ${MIN_LEN_PW} to ${MAX_LEN_PW}.`,
+      'string.password.invalid': 'Password must include letters and numbers.',
       'string.confirm_password.not_match':
-        'Mật khẩu xác nhận không khớp.',
-      'string.fullname.invalid': `Tên chỉ chứa kí tự chữ và độ dài trong khoảng ${MIN_LEN_FULLNAME} đến ${MAX_LEN_FULLNAME}`,
-      'string.date.invalid': 'Ngày sai định dạng DD-MM-YYYY.',
+        'Confirm password not match.',
+      'string.fullname.invalid': `The name contains only alphanumeric characters and ranges in length from ${MIN_LEN_FULLNAME} to ${MAX_LEN_FULLNAME}`,
+      'string.date.invalid': 'Wrong date format DD-MM-YYYY.',
       'string.birthday.invalid':
-          'Ngày sinh phải trước ngày hiện tại.',
-      'string.role.invalid': 'Role phải là admin hoặc user.',
+          'Date of birth must be before the current date.',
+      'string.role.invalid': 'Role must be admin or user.',
       'string.in.invalid': 'Value is not contain in array',
       'string.objectId.invalid': 'ObjectId is not valid',
     },

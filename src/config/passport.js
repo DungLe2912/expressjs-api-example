@@ -8,7 +8,7 @@ const V = require('../utils/customJoi');
 const APIError = require('../utils/APIError');
 const { comparePassword } = require('../utils/helpers');
 const { role } = require('../constants/role');
-const { APP_SECRET } = require('../constants/variable');
+const { APP_SECRET } = require('./vars');
 const User = require('../models/user.model');
 require('dotenv').config();
 
@@ -46,9 +46,9 @@ passport.use(
         if (!account) {
           return done(
             new APIError({
-              errors: new Error('Email hoặc mật khẩu không đúng.'),
+              errors: new Error('Email or password incorrect.'),
               status: httpStatus.NOT_FOUND,
-              message: 'Email hoặc mật khẩu không đúng.',
+              message: 'Email or password incorrect.',
             }),
             false,
           );
@@ -61,9 +61,9 @@ passport.use(
         if (!isSame) {
           return done(
             new APIError({
-              errors: new Error('Email hoặc mật khẩu không đúng.'),
+              errors: new Error('Email or password incorrect.'),
               status: httpStatus.NOT_FOUND,
-              message: 'Email hoặc mật khẩu không đúng.',
+              message: 'Email or password incorrect.',
             }),
             false,
           );
@@ -71,9 +71,9 @@ passport.use(
         if (!Object.values(role).includes(account.role)) {
           return done(
             new APIError({
-              errors: new Error('Bạn không có quyền đăng nhập.'),
+              errors: new Error('You do not have permission to login.'),
               status: httpStatus.FORBIDDEN,
-              message: 'Bạn không có quyền đăng nhập.',
+              message: 'You do not have permission to login.',
             }),
             false,
           );
@@ -84,7 +84,7 @@ passport.use(
           new APIError({
             errors: e,
             status: httpStatus.BAD_REQUEST,
-            message: 'Không thể đăng nhập lúc này.',
+            message: 'Can not login.',
           }),
           false,
         );
@@ -109,9 +109,9 @@ passport.use(
         if (error) {
           return done(
             new APIError({
-              errors: new Error('Token không hợp lệ.'),
+              errors: new Error('Invalid token.'),
               status: httpStatus.FORBIDDEN,
-              message: 'Token không hợp lệ.',
+              message: 'Invalid token.',
             }),
             false,
           );

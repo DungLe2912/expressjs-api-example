@@ -1,6 +1,6 @@
 const jwt = require('jsonwebtoken');
 const { promisify } = require('util');
-const { APP_SECRET, TOKEN_LIVING_TIME } = require('../constants/variable');
+const { APP_SECRET, TOKEN_LIVING_TIME } = require('../config/vars');
 
 const tokenOptions = {
   expiresIn: TOKEN_LIVING_TIME,
