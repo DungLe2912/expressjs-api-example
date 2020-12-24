@@ -5,6 +5,7 @@ const compress = require('compression');
 const methodOverride = require('method-override');
 const cors = require('cors');
 const helmet = require('helmet');
+const passport = require('passport');
 
 const routes = require('./routes');
 const error = require('./middlewares/error');
@@ -17,6 +18,10 @@ const app = express();
 // request logging. dev: console | production: file
 app.use(morgan(morganLogFormat));
 
+// apply passport
+app.use(passport.initialize());
+app.use(passport.session());
+require('./config/passport');
 // parse body params and attache them to req.body
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: true }));

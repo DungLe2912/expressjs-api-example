@@ -1,20 +1,12 @@
 class Pagination {
-  static isValid(limit, page) {
+  static paginate(limit, page) {
     const defaultValue = Pagination.default();
-    try {
-      const newLimit = !limit ? defaultValue.limit : +limit;
-      const newPage = !page ? defaultValue.page : +page;
-      return {
-        isValid: true,
-        limit: newLimit,
-        page: newPage,
-      };
-    } catch (e) {
-      return {
-        error: e,
-        isValid: false,
-      };
-    }
+    const newLimit = !limit ? defaultValue.limit : +limit;
+    const newPage = !page ? defaultValue.page : +page;
+    return {
+      limit: newLimit,
+      page: newPage,
+    };
   }
 
   static default() {
