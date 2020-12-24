@@ -4,7 +4,7 @@ const LocalStrategy = require('passport-local').Strategy;
 const JWTStrategy = require('passport-jwt').Strategy;
 const { ExtractJwt } = require('passport-jwt');
 
-const V = require('../utils/customJoi');
+const customJoi = require('../utils/customJoi');
 const APIError = require('../utils/APIError');
 const { comparePassword } = require('../utils/helpers');
 const { role } = require('../constants/role');
@@ -21,9 +21,9 @@ passport.use(
     },
     async (email, password, done) => {
       try {
-        const schema = V.object({
-          email: V.string().email().required(),
-          password: V.string().password().required(),
+        const schema = customJoi.object({
+          email: customJoi.string().email().required(),
+          password: customJoi.string().password().required(),
         });
         const { error, value } = schema.validate({
           email,
@@ -105,7 +105,7 @@ passport.use(
       try {
         const {
           error,
-        } = V.string().isObjectId().required().validate(_id);
+        } = customJoi.string().isObjectId().required().validate(_id);
         if (error) {
           return done(
             new APIError({
